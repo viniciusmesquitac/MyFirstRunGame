@@ -9,9 +9,9 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    let wooCutterCategory: UInt32 = 0x1 << 0
+    let woodCutterCategory: UInt32 = 0x1 << 0
     let treeSpriteCategory: UInt32 = 0x1 << 1
     
     var woodCutterSprite = SKSpriteNode(imageNamed: "tile001")
@@ -22,35 +22,28 @@ class GameScene: SKScene {
     let bgSprite = SKSpriteNode(imageNamed: "background")
     let groundSprite = SKSpriteNode(color: UIColor.green, size: CGSize(width: 50, height: 50))
     let treeSprite = SKSpriteNode(color: UIColor.green, size: CGSize(width: 30, height: 100))
-    let buttonSprite = SKSpriteNode(color: UIColor.red, size: CGSize(width: 30, height: 30))
     
     
     override func didMove(to view: SKView) {
+        self.physicsWorld.contactDelegate = self
         scene?.backgroundColor = .myColor
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
         
         // character
-        createCharacter(character: woodCutterSprite, frame: frame)
-        woodCutterSprite.physicsBody?.collisionBitMask = self.treeSpriteCategory
-        addChild(woodCutterSprite)
+        createCharacter()
+        
         
         // background
-        createBackground(background: bgSprite, floor: groundSprite, frame: frame)
-        bgSprite.addChild(groundSprite)
-        addChild(bgSprite)
+        //createBackground()
+        createGround()
         
         // others elements in scenario
         createTree(tree: treeSprite, frame: frame)
         treeSprite.physicsBody?.categoryBitMask = treeSpriteCategory
+        treeSprite.physicsBody?.contactTestBitMask = woodCutterCategory
         addChild(treeSprite)
     
-        
-        // button Sprite
-        buttonSprite.zPosition = 5
-        buttonSprite.position = CGPoint(x: frame.midX , y:frame.midY)
-        buttonSprite.action(forKey: Key.Run.rawValue)
-        addChild(buttonSprite)
     
         let textureAtlas = SKTextureAtlas(named: "SpritesWoodCutter")
 
@@ -68,61 +61,55 @@ class GameScene: SKScene {
 
         }
     
+    
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let runAnimate = SKAction.animate(with: woodCutterFrame, timePerFrame: 0.1)
         
-        let runMove = SKAction.move(to: changePosition(sprite: woodCutterSprite, by: woodCutterSprite.position), duration: 15.0)
+        let runMove = SKAction.move(to: changePosition(sprite: woodCutterSprite), duration: 15.0)
         
         let jumpMove = SKAction.move(to: jump(sprite: woodCutterSprite), duration: 0.1)
         
         let backgroundMove = SKAction.move(to: changePositionBack(sprite: bgSprite, by: bgSprite.position), duration: 100.0)
-       
-
-        if woodCutterSprite.frame.intersects(treeSprite.frame) {
-            if let _ = woodCutterSprite.action(forKey: Key.Attack.rawValue) {
-              print("intersects !!!!!")
-            } else {
-                woodCutterSprite.run(SKAction.animate(with: self.woodCutterFrameAttack, timePerFrame: 0.1), withKey: "Attack")
-                treeSprite.removeFromParent()
-            }
-        }
-
-
-        if let _ = woodCutterSprite.action(forKey: Key.Run.rawValue) {
-            if !woodCutterSprite.frame.intersects(treeSprite.frame) {
-                woodCutterSprite.removeAction(forKey: Key.Run.rawValue)
-                woodCutterSprite.run(jumpMove)
-            }
+        
+        
+        if let _ = woodCutterSprite.action(forKey: "Run") {
+            woodCutterSprite.removeAllActions()
         } else {
-            woodCutterSprite.run(SKAction.group([SKAction.repeatForever(runAnimate), SKAction.repeatForever(runMove)]), withKey: Key.Run.rawValue)
-
-            // bgSprite.run(SKAction.repeatForever(backgroundMove))
-        }
-    }
-    
-    func checkCollision() {
-        enumerateChildNodes(withName: "cutter") { node, _ in
-            let cutter = node as! SKSpriteNode
-            print(self.treeSprite.frame)
-            if cutter.frame.intersects(self.treeSprite.frame) {
-              if let _ = cutter.action(forKey: Key.Run.rawValue) {
-                    print("intersects !!!!!")
-                    cutter.removeAction(forKey: Key.Run.rawValue)
-                self.treeSprite.removeFromParent()
-                self.treeSprite.physicsBody = SKPhysicsBody()
-                
-                } else {
-                cutter.removeAction(forKey: Key.Run.rawValue)
-                //cutter.run(SKAction.animate(with: self.woodCutterFrameAttack, timePerFrame: 0.1))
-    
-                self.buttonSprite.color = .green
-                }
+            if !woodCutterSprite.frame.intersects(self.treeSprite.frame) {
+                let runActions = [SKAction.repeatForever(runAnimate), SKAction.repeatForever(runMove)]
+                let runGroupAnimate = SKAction.group(runActions)
+                woodCutterSprite.run(runGroupAnimate, withKey: Key.Run.rawValue)
             }
         }
+        
+        if let _ = woodCutterSprite.action(forKey: "Attack") {
+            woodCutterSprite.removeAllActions()
+            let runActions = [SKAction.repeatForever(runAnimate), SKAction.repeatForever(runMove)]
+            let runGroupAnimate = SKAction.group(runActions)
+            woodCutterSprite.run(runGroupAnimate, withKey: Key.Run.rawValue)
+        } else {
+            print("intersects")
+        }
+        
+        
+        
     }
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        if collision == woodCutterCategory | treeSpriteCategory {
+            print("this colide")
+            
+            self.woodCutterSprite.removeAllActions()
+            self.woodCutterSprite.run(SKAction.repeatForever(SKAction.animate(with: self.woodCutterFrameAttack, timePerFrame: 0.1)), withKey: "Attack")
+            self.treeSprite.removeFromParent()
+            self.woodCutterSprite.position = CGPoint(x: self.woodCutterSprite.position.x - 20, y: self.woodCutterSprite.position.y)
+        }
+    }
+    
     
     override func didEvaluateActions() {
         
@@ -133,6 +120,63 @@ class GameScene: SKScene {
     }
     
     
+    func createBackground(){
+        
+        let backgroundTexture = SKTexture(imageNamed: "background")
+        
+        for i in 0...1 {
+            let background = SKSpriteNode(texture: backgroundTexture)
+            background.zPosition = 2
+            background.anchorPoint = CGPoint.zero
+            background.size = CGSize(width: frame.size.width, height: frame.size.height)
+            background.position = CGPoint(x: (backgroundTexture.size().width * CGFloat(i)) - CGFloat(1 * i), y: 0)
+            addChild(background)
+        }
+        
+    }
+    
+    func createGround() {
+        
+        let groundTexture = SKTexture(imageNamed: "ground")
+        
+        
+        
+            let ground = SKSpriteNode(texture: groundTexture)
+            ground.size = CGSize(width: frame.width - 10, height: 50)
+            ground.zPosition = 3
+//            ground.anchorPoint = CGPoint.zero
+            ground.position = CGPoint(x: 2, y: frame.minY + 20)
+            ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
+            ground.physicsBody?.affectedByGravity = false
+            //ground.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+
+            addChild(ground)
+//
+//            let moveLeft = SKAction.moveBy(x: -groundTexture.size().width, y: 0, duration: 5)
+//            let moveReset = SKAction.moveBy(x: groundTexture.size().width, y: 0, duration: 0)
+//            let moveLoop = SKAction.sequence([moveLeft, moveReset])
+//            let moveForever = SKAction.repeatForever(moveLoop)
+//
+//            ground.run(moveForever)
+        
+  
+    }
+    
+    func createCharacter() {
+        woodCutterSprite.size = CGSize(width: 100.0, height: 100.0)
+        woodCutterSprite.zPosition = 1
+        woodCutterSprite.name = "cutter"
+        woodCutterSprite.position = CGPoint(x: frame.midX - frame.width/2 + woodCutterSprite.size.width/2 , y:frame.midY - frame.height/2 + woodCutterSprite.size.height + 100)
+        
+        woodCutterSprite.physicsBody = SKPhysicsBody(rectangleOf: woodCutterSprite.size)
+        woodCutterSprite.physicsBody?.applyTorque(50)
+        woodCutterSprite.physicsBody?.allowsRotation = false
+        woodCutterSprite.physicsBody?.categoryBitMask = woodCutterCategory
+        woodCutterSprite.physicsBody?.collisionBitMask = self.treeSpriteCategory
+        addChild(woodCutterSprite)
+    }
+
+    
 }
 
 
@@ -141,8 +185,10 @@ extension UIColor {
 }
 
 
-func changePosition(sprite: SKSpriteNode, by: CGPoint) -> CGPoint {
-    let newPosition = CGPoint(x: by.x*15, y: by.y)
+
+
+func changePosition(sprite: SKSpriteNode) -> CGPoint {
+    let newPosition = CGPoint(x: sprite.position.x*15, y: sprite.position.y)
     return newPosition
 }
 
@@ -156,30 +202,9 @@ func changePositionBack(sprite: SKSpriteNode, by: CGPoint) -> CGPoint {
     return newPosition
 }
 
-func createCharacter(character: SKSpriteNode, frame: CGRect) {
-    character.size = CGSize(width: 100.0, height: 100.0)
-    character.zPosition = 3
-    character.name = "cutter"
-    character.position = CGPoint(x: frame.midX - frame.width/2 + character.size.width/2, y:frame.midY - frame.height/2 + character.size.height)
-    
-    character.physicsBody = SKPhysicsBody(rectangleOf: character.size)
-    character.physicsBody?.allowsRotation = false
-    
-}
 
-func createBackground(background: SKSpriteNode, floor: SKSpriteNode, frame: CGRect){
-    
-    background.zPosition = 2
-    background.size = CGSize(width: frame.size.width, height: frame.size.height)
-    background.position = CGPoint(x: frame.midX , y:frame.midY)
-    
-    
-    floor.zPosition = 1
-    floor.size = CGSize(width: frame.size.width - 5, height: 20)
-    floor.position = CGPoint(x: 0, y: -180)
-    floor.physicsBody = SKPhysicsBody(rectangleOf: floor.size)
-    floor.physicsBody?.affectedByGravity = false
-}
+
+
 
 
 func createTree(tree: SKSpriteNode, frame: CGRect){
