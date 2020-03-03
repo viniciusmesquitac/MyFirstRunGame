@@ -13,15 +13,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     let woodCutterCategory: UInt32 = 0x1 << 0
     let treeSpriteCategory: UInt32 = 0x1 << 1
-
-    var woodCutterFrame = [SKTexture]()
-    var woodCutterFrameAttack = [SKTexture]()
-    
     
     var player = WoodCutter()
-    
     let bgSprite = SKSpriteNode(imageNamed: "background")
     let groundSprite = SKSpriteNode(color: UIColor.green, size: CGSize(width: 50, height: 50))
+    
     let treeSprite = SKSpriteNode(color: UIColor.green, size: CGSize(width: 30, height: 100))
     let treeSprite2 = SKSpriteNode(color: UIColor.green, size: CGSize(width: 30, height: 100))
     
@@ -36,8 +32,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         loadCharacter(player)
         
         // background
-        //loadBackground()
-        
+        loadBackground()
         loadGround()
         
         // elements
@@ -50,7 +45,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
         // let backgroundMove = SKAction.move(to: changePositionBack(sprite: bgSprite, by: bgSprite.position), duration: 100.0)
         
-        
+
         if let _ = player.action(forKey: "Run") {
             player.removeAllActions()
         } else {
@@ -68,9 +63,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.createRunAnimate()
         } else {
             print("stop / run cutter")
+            // player.jump()
             
             if player.position.x > frame.maxX {
-                player.position = CGPoint(x: frame.midX - frame.width/2 + player.size.width/2 , y:frame.midY - frame.height/2 + player.size.height + 100)
+                let startPointX = frame.midX - frame.width/2 + player.size.width/2
+                let startPointY = frame.midY - frame.height/2 + player.size.height + 100
+                player.position = CGPoint(x: startPointX, y: startPointY)
             }
         }
         
@@ -141,10 +139,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func loadCharacter(_ player: SKSpriteNode) {
         
+        let startPointX = frame.midX - frame.width/2 + player.size.width/2
+        let startPointY = frame.midY - frame.height/2 + player.size.height + 100
+        
         player.size = CGSize(width: 100.0, height: 100.0)
         player.zPosition = 1
         player.name = "cutter"
-        player.position = CGPoint(x: frame.midX - frame.width/2 + player.size.width/2 , y:frame.midY - frame.height/2 + player.size.height + 100)
+        player.position = CGPoint(x: startPointX, y: startPointY)
         
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
         player.physicsBody?.applyTorque(50)
@@ -156,11 +157,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func loadTree(tree: SKSpriteNode) {
         
-        let random = CGFloat.random(in: 100 ..< frame.maxX)
-        
         tree.zPosition = 4
         tree.name = "tree"
-        tree.position = CGPoint(x: random, y:frame.midY)
+        tree.position = CGPoint(x: CGFloat.random(in: frame.midX ..< frame.maxX), y:frame.midY)
         tree.physicsBody = SKPhysicsBody(rectangleOf: tree.size)
         tree.physicsBody?.categoryBitMask = treeSpriteCategory
         tree.physicsBody?.contactTestBitMask = woodCutterCategory

@@ -67,6 +67,7 @@ class WoodCutter: SKSpriteNode {
     
     func jump(){
         jumpMove = SKAction.move(to: jump(sprite: self), duration: 0.1)
+        self.run(jumpMove)
     }
     
     func attack() {
@@ -82,7 +83,7 @@ class WoodCutter: SKSpriteNode {
     }
 
     func jump(sprite: SKSpriteNode) -> CGPoint {
-        let newPosition = CGPoint(x: sprite.position.x*1.6, y: sprite.position.y * 5)
+        let newPosition = CGPoint(x: sprite.position.x*1.1, y: sprite.position.y * 1.2)
         return newPosition
     }
 
