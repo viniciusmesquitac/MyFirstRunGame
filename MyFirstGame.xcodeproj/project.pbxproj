@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		812BC99F240C126D0058D4CD /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812BC99E240C126D0058D4CD /* Character.swift */; };
+		81CF6EFB240DC9CA00FFD540 /* WoodCutter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CF6EFA240DC9CA00FFD540 /* WoodCutter.swift */; };
 		81EBCC6B2401E88A0063F78F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBCC6A2401E88A0063F78F /* AppDelegate.swift */; };
 		81EBCC712401E88A0063F78F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBCC702401E88A0063F78F /* GameScene.swift */; };
 		81EBCC732401E88A0063F78F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBCC722401E88A0063F78F /* GameViewController.swift */; };
@@ -36,7 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		812BC99E240C126D0058D4CD /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
+		81CF6EFA240DC9CA00FFD540 /* WoodCutter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoodCutter.swift; sourceTree = "<group>"; };
 		81EBCC672401E88A0063F78F /* MyFirstGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFirstGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81EBCC6A2401E88A0063F78F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81EBCC702401E88A0063F78F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -78,12 +78,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		812BC99D240C12530058D4CD /* Sprites */ = {
+		81CF6EF7240DC92B00FFD540 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				812BC99E240C126D0058D4CD /* Character.swift */,
+				81CF6EFA240DC9CA00FFD540 /* WoodCutter.swift */,
 			);
-			path = Sprites;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		81EBCC5E2401E88A0063F78F = {
@@ -109,7 +109,7 @@
 		81EBCC692401E88A0063F78F /* MyFirstGame */ = {
 			isa = PBXGroup;
 			children = (
-				812BC99D240C12530058D4CD /* Sprites */,
+				81CF6EF7240DC92B00FFD540 /* Classes */,
 				81EBCC6A2401E88A0063F78F /* AppDelegate.swift */,
 				81EBCC702401E88A0063F78F /* GameScene.swift */,
 				81EBCC722401E88A0063F78F /* GameViewController.swift */,
@@ -273,7 +273,7 @@
 				81EBCC712401E88A0063F78F /* GameScene.swift in Sources */,
 				81EBCC732401E88A0063F78F /* GameViewController.swift in Sources */,
 				81EBCC6B2401E88A0063F78F /* AppDelegate.swift in Sources */,
-				812BC99F240C126D0058D4CD /* Character.swift in Sources */,
+				81CF6EFB240DC9CA00FFD540 /* WoodCutter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
