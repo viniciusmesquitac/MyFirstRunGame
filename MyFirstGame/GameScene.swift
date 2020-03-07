@@ -36,25 +36,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         loadGround()
         
         // elements
-        loadTree(tree: treeSprite)
-        loadTree(tree: treeSprite2)
+        loadTree(treeSprite)
+        loadTree(treeSprite2)
      
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    
-        // let backgroundMove = SKAction.move(to: changePositionBack(sprite: bgSprite, by: bgSprite.position), duration: 100.0)
-        
 
         if let _ = player.action(forKey: "Run") {
             player.removeAllActions()
         } else {
             if !player.frame.intersects(self.treeSprite.frame) {
                 player.createRunAnimate()
-            } else {
-                if self.childNode(withName: "tree") == nil {
-                    player.createRunAnimate()
-                }
             }
         }
         
@@ -62,8 +55,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.removeAllActions()
             player.createRunAnimate()
         } else {
-            print("stop / run cutter")
-            // player.jump()
+            
+            print("stop / run player")
             
             if player.position.x > frame.maxX {
                 let startPointX = frame.midX - frame.width/2 + player.size.width/2
@@ -90,6 +83,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func didEvaluateActions() {
+        
+        if let _ = player.action(forKey: "Run") {
+            player.runMoveFunction()
+            print(player.position.x)
+        } else {
+            print("im not runnig")
+        }
         
     }
     
@@ -121,19 +121,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ground.size = CGSize(width: frame.width - 5, height: 50)
         ground.zPosition = 3
         ground.position = CGPoint(x: 2, y: frame.minY + 20)
+        
         ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
         ground.physicsBody?.affectedByGravity = false
-
-
         addChild(ground)
-
-//        let moveLeft = SKAction.moveBy(x: -groundTexture.size().width, y: 0, duration: 5)
-//        let moveReset = SKAction.moveBy(x: groundTexture.size().width, y: 0, duration: 0)
-//        let moveLoop = SKAction.sequence([moveLeft, moveReset])
-//        let moveForever = SKAction.repeatForever(moveLoop)
-//
-//        ground.run(moveForever)
-        
   
     }
     
@@ -155,11 +146,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(player)
     }
     
-    func loadTree(tree: SKSpriteNode) {
+    func loadTree(_ tree: SKSpriteNode) {
         
         tree.zPosition = 4
         tree.name = "tree"
         tree.position = CGPoint(x: CGFloat.random(in: frame.midX ..< frame.maxX), y:frame.midY)
+        
         tree.physicsBody = SKPhysicsBody(rectangleOf: tree.size)
         tree.physicsBody?.categoryBitMask = treeSpriteCategory
         tree.physicsBody?.contactTestBitMask = woodCutterCategory
@@ -167,7 +159,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
 
 }
-
 
 extension UIColor {
     static let myColor = #colorLiteral(red: 0, green: 0.5713948011, blue: 0.8833462, alpha: 1)
