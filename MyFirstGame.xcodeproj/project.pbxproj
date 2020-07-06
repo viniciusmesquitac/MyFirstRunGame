@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		814FC99F24B2030000F4EA41 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814FC99E24B2030000F4EA41 /* MenuScene.swift */; };
+		814FC9A124B2039D00F4EA41 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814FC9A024B2039D00F4EA41 /* Colors.swift */; };
+		814FC9A424B2046800F4EA41 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814FC9A324B2046800F4EA41 /* Tree.swift */; };
+		814FC9A624B2061D00F4EA41 /* SKScene+Loadings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814FC9A524B2061D00F4EA41 /* SKScene+Loadings.swift */; };
+		814FC9A924B29C8100F4EA41 /* ACTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814FC9A824B29C8100F4EA41 /* ACTManager.swift */; };
+		814FC9AB24B2A10600F4EA41 /* ScreenSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814FC9AA24B2A10600F4EA41 /* ScreenSize.swift */; };
 		81CF6EFB240DC9CA00FFD540 /* WoodCutter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CF6EFA240DC9CA00FFD540 /* WoodCutter.swift */; };
 		81EBCC6B2401E88A0063F78F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBCC6A2401E88A0063F78F /* AppDelegate.swift */; };
 		81EBCC712401E88A0063F78F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBCC702401E88A0063F78F /* GameScene.swift */; };
 		81EBCC732401E88A0063F78F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBCC722401E88A0063F78F /* GameViewController.swift */; };
-		81EBCC762401E88A0063F78F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81EBCC742401E88A0063F78F /* Main.storyboard */; };
 		81EBCC782401E88B0063F78F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81EBCC772401E88B0063F78F /* Assets.xcassets */; };
 		81EBCC7B2401E88B0063F78F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81EBCC792401E88B0063F78F /* LaunchScreen.storyboard */; };
 		81EBCC862401E88B0063F78F /* MyFirstGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EBCC852401E88B0063F78F /* MyFirstGameTests.swift */; };
@@ -36,12 +41,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		814FC99E24B2030000F4EA41 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
+		814FC9A024B2039D00F4EA41 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		814FC9A324B2046800F4EA41 /* Tree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tree.swift; sourceTree = "<group>"; };
+		814FC9A524B2061D00F4EA41 /* SKScene+Loadings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKScene+Loadings.swift"; sourceTree = "<group>"; };
+		814FC9A824B29C8100F4EA41 /* ACTManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACTManager.swift; sourceTree = "<group>"; };
+		814FC9AA24B2A10600F4EA41 /* ScreenSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenSize.swift; sourceTree = "<group>"; };
 		81CF6EFA240DC9CA00FFD540 /* WoodCutter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WoodCutter.swift; sourceTree = "<group>"; };
 		81EBCC672401E88A0063F78F /* MyFirstGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFirstGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81EBCC6A2401E88A0063F78F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81EBCC702401E88A0063F78F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		81EBCC722401E88A0063F78F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		81EBCC752401E88A0063F78F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		81EBCC772401E88B0063F78F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81EBCC7A2401E88B0063F78F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		81EBCC7C2401E88B0063F78F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -78,12 +88,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		81CF6EF7240DC92B00FFD540 /* Classes */ = {
+		814FC99A24B1FE7700F4EA41 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				814FC9A024B2039D00F4EA41 /* Colors.swift */,
+				814FC9A524B2061D00F4EA41 /* SKScene+Loadings.swift */,
+				814FC9AA24B2A10600F4EA41 /* ScreenSize.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		814FC99B24B1FE8C00F4EA41 /* Character */ = {
 			isa = PBXGroup;
 			children = (
 				81CF6EFA240DC9CA00FFD540 /* WoodCutter.swift */,
 			);
-			path = Classes;
+			path = Character;
+			sourceTree = "<group>";
+		};
+		814FC99C24B1FF0400F4EA41 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				81EBCC6A2401E88A0063F78F /* AppDelegate.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		814FC99D24B202E900F4EA41 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				81EBCC702401E88A0063F78F /* GameScene.swift */,
+				814FC99E24B2030000F4EA41 /* MenuScene.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		814FC9A224B2044A00F4EA41 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				814FC9A324B2046800F4EA41 /* Tree.swift */,
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
+		814FC9A724B29C7400F4EA41 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				814FC9A824B29C8100F4EA41 /* ACTManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		81EBCC5E2401E88A0063F78F = {
@@ -109,11 +162,13 @@
 		81EBCC692401E88A0063F78F /* MyFirstGame */ = {
 			isa = PBXGroup;
 			children = (
-				81CF6EF7240DC92B00FFD540 /* Classes */,
-				81EBCC6A2401E88A0063F78F /* AppDelegate.swift */,
-				81EBCC702401E88A0063F78F /* GameScene.swift */,
+				814FC9A724B29C7400F4EA41 /* Manager */,
+				814FC9A224B2044A00F4EA41 /* Objects */,
+				814FC99D24B202E900F4EA41 /* Scenes */,
+				814FC99C24B1FF0400F4EA41 /* Config */,
+				814FC99B24B1FE8C00F4EA41 /* Character */,
+				814FC99A24B1FE7700F4EA41 /* Extensions */,
 				81EBCC722401E88A0063F78F /* GameViewController.swift */,
-				81EBCC742401E88A0063F78F /* Main.storyboard */,
 				81EBCC772401E88B0063F78F /* Assets.xcassets */,
 				81EBCC792401E88B0063F78F /* LaunchScreen.storyboard */,
 				81EBCC7C2401E88B0063F78F /* Info.plist */,
@@ -243,7 +298,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81EBCC762401E88A0063F78F /* Main.storyboard in Resources */,
 				81EBCC782401E88B0063F78F /* Assets.xcassets in Resources */,
 				81EBCC7B2401E88B0063F78F /* LaunchScreen.storyboard in Resources */,
 			);
@@ -270,8 +324,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				814FC9AB24B2A10600F4EA41 /* ScreenSize.swift in Sources */,
+				814FC9A424B2046800F4EA41 /* Tree.swift in Sources */,
+				814FC9A924B29C8100F4EA41 /* ACTManager.swift in Sources */,
+				814FC9A624B2061D00F4EA41 /* SKScene+Loadings.swift in Sources */,
 				81EBCC712401E88A0063F78F /* GameScene.swift in Sources */,
+				814FC9A124B2039D00F4EA41 /* Colors.swift in Sources */,
 				81EBCC732401E88A0063F78F /* GameViewController.swift in Sources */,
+				814FC99F24B2030000F4EA41 /* MenuScene.swift in Sources */,
 				81EBCC6B2401E88A0063F78F /* AppDelegate.swift in Sources */,
 				81CF6EFB240DC9CA00FFD540 /* WoodCutter.swift in Sources */,
 			);
@@ -309,14 +369,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		81EBCC742401E88A0063F78F /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				81EBCC752401E88A0063F78F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		81EBCC792401E88B0063F78F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -378,7 +430,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -432,7 +484,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
