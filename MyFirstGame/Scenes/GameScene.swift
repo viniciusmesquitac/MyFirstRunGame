@@ -11,31 +11,84 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var player = WoodCutter()
-    let bgSprite = SKSpriteNode(imageNamed: "background")
+    // character
+    var character = WoodCutter()
     
-    let groundSprite = SKSpriteNode(color: UIColor.green, size: CGSize(width: 50, height: 50))
+    // enviroment
+    let background = SKSpriteNode(imageNamed: "background")
+    let ground = SKSpriteNode(color: UIColor.green, size: CGSize(width: 50, height: 50))
+    
+    // objects
     let treeSprite = Tree()
     let treeSprite2 = Tree()
     
+    // interface
+    var attackButton = SpriteButton(imageNamed: "attackButton")
     
     override func didMove(to view: SKView) {
         
-        self.physicsWorld.contactDelegate = self
-        scene?.backgroundColor = .myColor
+        physicsWorld.contactDelegate = self
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        scene?.backgroundColor = .myColor
         
+        setupNodes()
+        setupButton()
+        addNode()
+        
+    
+        
+    }
+    
+    func addNode() {
+        addChild(attackButton)
+    }
+    
+    func setupNodes() {
+//        padLeft.size = CGSize(width: 50, height: 50)
+        attackButton.position = CGPoint(x: size.width/2, y: size.height/2)
         
         // character
-        loadCharacter(player)
+        loadCharacter(character)
         
         // background
-        loadBackground(background: bgSprite)
+        loadBackground(background: background)
         loadGround()
         
         // elements
         loadTree(treeSprite)
         loadTree(treeSprite2)
+    }
+    
+    
+    func setupButton() {
+        
+        attackButton.setAction {
+            
+            self.character.removeAllActions()
+            self.character.idle()
+            self.character.attack(repeatForever: false)
+            
+            if self.character.frame.intersects(self.treeSprite.frame) {
+                print("atacou!!")
+                
+                self.treeSprite.life -= 1
+                
+                if self.treeSprite.life == 0 {
+                    self.treeSprite.removeFromParent()
+                }
+            }
+            
+            if self.character.frame.intersects(self.treeSprite2.frame) {
+                
+                self.treeSprite2.life -= 1
+                
+                if self.treeSprite2.life == 0 {
+                    self.treeSprite2.removeFromParent()
+                }
+            }
+        }
+        
+        
         
     }
     
@@ -62,29 +115,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func handlePlayerActions(direction: Direction) {
         
         // if not running, attacking.
-        if let _ = player.action(forKey: PlayerActions.run.rawValue) {
-            player.removeAllActions()
-            player.idle()
+        if let _ = character.action(forKey: PlayerActions.run.rawValue) {
+            character.removeAllActions()
+            character.idle()
         } else {
-            if !player.frame.intersects(self.treeSprite.frame) {
-                player.createRunAnimate(direction: direction)
+            if !character.frame.intersects(self.treeSprite.frame) {
+                character.run(direction: direction)
             } else {
-                player.attack()
+                character.attack()
             }
         }
         
         // if not attacking, running.
-        if let _ = player.action(forKey: PlayerActions.attack.rawValue) {
-            player.removeAllActions()
-            player.createRunAnimate(direction: direction)
+        if let _ = character.action(forKey: PlayerActions.attack.rawValue) {
+            character.removeAllActions()
+            character.run(direction: direction)
         } else {
             
             // if attaching the limits of screen, the player will be send to the start!
-            if player.position.x > frame.maxX {
-                let startPointX = frame.midX - frame.width/2 + player.size.width/2
-                let startPointY = frame.midY - frame.height/2 + player.size.height + 100
+            if character.position.x > frame.maxX {
+                let startPointX = frame.midX - frame.width/2 + character.size.width/2
+                let startPointY = frame.midY - frame.height/2 + character.size.height + 100
                 // goodbye player :>
-                player.position = CGPoint(x: startPointX, y: startPointY)
+                character.position = CGPoint(x: startPointX, y: startPointY)
             }
         }
         
@@ -95,17 +148,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Handle collision in scene
         let collision = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         if collision == CategoryMask.woodcutter.rawValue | CategoryMask.tree.rawValue {
-            print("the sprite \(contact.bodyA.node?.name ?? "bodyA") colide with the \(contact.bodyB.node?.name ?? "bodyB")" )
-            
-            self.player.removeAllActions()
-            player.attack()
-            
-            let tree = contact.bodyB.node as? Tree
-            tree?.life -= 1
-            
-            if tree?.life == 0 {
-                contact.bodyB.node?.removeFromParent()
-            }
+            self.character.removeAllActions()
+            self.character.idle()
+//            let tree = contact.bodyB.node as? Tree
+//                       tree?.life -= 1
+//
+//                       if tree?.life == 0 {
+//                           contact.bodyB.node?.removeFromParent()
+//                       }
 
             
         }
@@ -113,8 +163,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func didEvaluateActions() {
-        if let _ = player.action(forKey: PlayerActions.run.rawValue) {
-            player.runMoveFunction()
+        if let _ = character.action(forKey: PlayerActions.run.rawValue) {
+            character.move()
         } else {
             // the player is not running
         }

@@ -10,28 +10,33 @@ import SpriteKit
 
 class MenuScene: SKScene {
     
-    lazy var playButton: SKSpriteNode = {
-        let button = SKSpriteNode(texture: nil, color: .blue, size: CGSize(width: 100, height: 40))
+    lazy var playButton: SpriteButton = {
+        let button = SpriteButton(imageNamed: "button")
         return button
     }()
     
-    
     override func sceneDidLoad() {
+        
         backgroundColor = .myColor
+        
+        playButton.setAction {
+            let transition = SKTransition.moveIn(with: .up, duration: 1.0)
+            ACTManager.shared.transition(self, toScene: .GamePlay, transition: transition)
+        }
         setupNode()
         addNodes()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            
-            if touch == touches.first {
-                let transition = SKTransition.moveIn(with: .up, duration: 1.0)
-                ACTManager.shared.transition(self, toScene: .GamePlay, transition: transition)
-            }
-            
-        }
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        for touch in touches {
+//
+//            if touch == touches.first {
+//                let transition = SKTransition.moveIn(with: .up, duration: 1.0)
+//                ACTManager.shared.transition(self, toScene: .GamePlay, transition: transition)
+//            }
+//
+//        }
+//    }
     
     
     func setupNode() {
