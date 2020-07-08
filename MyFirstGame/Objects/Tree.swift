@@ -16,9 +16,17 @@ class Tree: SKSpriteNode {
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: nil, color: .green, size: initialSize)
+        
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setup() {
+        physicsBody = SKPhysicsBody(rectangleOf: size)
+        physicsBody?.categoryBitMask = CategoryMask.tree.rawValue
+        physicsBody?.contactTestBitMask = CategoryMask.woodcutter.rawValue
     }
 }

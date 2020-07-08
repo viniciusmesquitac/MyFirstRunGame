@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-class WoodCutter: SKSpriteNode {
+class WoodCutter: Character {
     
     // Player Proprieties
     var velocity: Double = 1.0
@@ -22,6 +22,7 @@ class WoodCutter: SKSpriteNode {
     var runFrame = [SKTexture]()
     var attackFrame = [SKTexture]()
     var idleFrame = [SKTexture]()
+    var jumpFrame = [SKTexture]()
     
     // Action animations
     var runAnimate = SKAction()
@@ -36,12 +37,15 @@ class WoodCutter: SKSpriteNode {
         
         super.init(texture: characterTexture, color: .clear, size: characterSize)
         
-        runFrame = loadAtlas(atlasName: "SpritesRunning", textureName: "run")
+        runFrame = loadAtlas(atlasName: "SpritesRun", textureName: "run")
         
         attackFrame = loadAtlas(atlasName: "SpritesAttack", textureName: "attack")
         
         idleFrame = loadAtlas(atlasName: "SpritesIdle", textureName: "idle")
         
+        jumpFrame = loadAtlas(atlasName: "SpritesJump", textureName: "jump")
+        
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,9 +66,20 @@ class WoodCutter: SKSpriteNode {
         
     }
     
+    // MARK: - Init
+    func setup() {
+        let retaguleMask =  CGSize(width: size.width/3, height: size.height)
+        physicsBody = SKPhysicsBody(rectangleOf: retaguleMask)
+        physicsBody?.allowsRotation = false
+        physicsBody?.applyTorque(50.0)
+        physicsBody?.contactTestBitMask = CategoryMask.woodcutter.rawValue | CategoryMask.tree.rawValue
+        physicsBody?.categoryBitMask = CategoryMask.woodcutter.rawValue
+        physicsBody?.collisionBitMask = CategoryMask.tree.rawValue
+    }
+    
 }
 
-extension WoodCutter: Character {
+extension WoodCutter {
     
     func run(direction: Direction) {
         runAnimate = SKAction.animate(with: runFrame, timePerFrame: 0.1)
@@ -100,7 +115,9 @@ extension WoodCutter: Character {
     }
     
     func jump() {
-        // let newPosition = CGPoint(x: self.position.x*1.1, y: self.position.y * 1.2)
+//        let newPosition = CGPoint(x: self.position.x * 1.1, y: self.position.y * 1.2)
+        idleAction = SKAction.animate(with: idleFrame, timePerFrame: 0.5)
+        self.run(SKAction.repeatForever(idleAction), withKey: PlayerActions.jump.rawValue)
     }
     
     func changePosition(sprite: SKSpriteNode, direction: Direction) -> CGPoint {

@@ -10,14 +10,23 @@ import SpriteKit
 
 class MenuScene: SKScene {
     
-    lazy var playButton: SpriteButton = {
-        let button = SpriteButton(imageNamed: "button")
-        return button
-    }()
+    let playButton: SpriteButton
+    
+    override init(size: CGSize) {
+         playButton = SpriteButton(imageNamed: "button")
+        super.init(size: size)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func sceneDidLoad() {
         
         backgroundColor = .myColor
+        
+       
+              
         
         playButton.setAction {
             let transition = SKTransition.moveIn(with: .up, duration: 1.0)

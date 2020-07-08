@@ -22,8 +22,8 @@ class SpriteButton: SKNode {
     
     init(imageNamed: String) {
 //        button = SKSpriteNode(imageNamed: imageNamed)
-        button = SKSpriteNode(color: .blue, size: CGSize(width: 100.0, height: 40.0))
-        self.button.color = .blue
+        button = SKSpriteNode(color: .red, size: CGSize(width: 100.0, height: 40.0))
+        button.alpha = 0.5
         self.mask = SKSpriteNode(color: .black, size: button.size)
         mask.alpha = 0.0
         cropNode = SKCropNode()
@@ -68,7 +68,7 @@ class SpriteButton: SKNode {
                 let location: CGPoint = touch.location(in: self)
                 
                 if button.contains(location) {
-                    mask.alpha = 0.5
+                    mask.alpha = 0.2
                 } else {
                     mask.alpha = 0.0
                 }
@@ -85,13 +85,13 @@ class SpriteButton: SKNode {
     func enable() {
         isEnable = true
         mask.alpha = 0.0
-        button.alpha = 1.0
+        button.alpha = 0.5
     }
     
     func disable() {
         isEnable = false
         mask.alpha = 0.0
-        button.alpha = 0.5
+        button.alpha = 0.2
     }
 }
 

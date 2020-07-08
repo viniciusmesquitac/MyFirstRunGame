@@ -10,15 +10,17 @@ import Foundation
 import SpriteKit
 
 enum Direction {
-       case left
-       case right
-   }
-
-enum PlayerActions: String {
-    case run = "Run", attack = "Attack", idle = "Idle", move = "Move"
+    case left
+    case right
 }
 
-protocol Character {
+typealias Character = CharacterProtocol & SKSpriteNode
+
+enum PlayerActions: String {
+    case run = "Run", attack = "Attack", idle = "Idle", move = "Move", jump = "Jump"
+}
+
+protocol CharacterProtocol {
     
     var velocity: Double { get set }
     var characterSize: CGSize { get set }
