@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 extension GameScene {
     
@@ -51,6 +52,30 @@ extension GameScene {
                 self.character.removeAllActions()
                 self.character.idle()
             } else {
+                if self.character.position.y > 91 {
+                    
+                    var newPosition: CGPoint = .zero
+                    var olderPosition: CGPoint = .zero
+                    
+                    switch self.character.movingTo {
+                    case .left:
+                        olderPosition = CGPoint(x: self.position.x - 20, y: self.position.y)
+                        newPosition = CGPoint(x: self.position.x - 20, y: self.position.y *  1.7)
+                    case .right:
+                        olderPosition = CGPoint(x: self.position.x * 1.1, y: self.position.y)
+                        newPosition = CGPoint(x: self.position.x * 1.1, y: self.position.y * 1.7)
+                        
+                    case .none:
+                        print("opa")
+                    }
+                    
+                    let jumpMove = SKAction.move(to: newPosition, duration: 0.3)
+                    let jumpMoveBack = SKAction.move(to: olderPosition, duration: 0.3)
+                    
+                    let jumpMoveAction = SKAction.sequence([jumpMove, jumpMoveBack])
+                    
+                    self.character.move()
+                }
                 self.character.run(direction: .left)
             }
             
@@ -67,6 +92,11 @@ extension GameScene {
         
         
         jumpButton.setAction {
+            if let _ = self.character.action(forKey: PlayerActions.run.rawValue) {
+                self.character.removeAllActions()
+                self.character.jump()
+                self.character.idle()
+            }
             self.character.jump()
         }
         

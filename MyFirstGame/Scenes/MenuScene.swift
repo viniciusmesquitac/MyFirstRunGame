@@ -25,35 +25,23 @@ class MenuScene: SKScene {
         
         backgroundColor = .myColor
         
-       
-              
+        setup()
+        buildNodeHierarchy()
+    }
+    
+    
+    func setup() {
+        
+        playButton.position = CGPoint(x: size.width/2, y: size.height/2)
         
         playButton.setAction {
             let transition = SKTransition.moveIn(with: .up, duration: 1.0)
             ACTManager.shared.transition(self, toScene: .GamePlay, transition: transition)
         }
-        setupNode()
-        addNodes()
+        
     }
     
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        for touch in touches {
-//
-//            if touch == touches.first {
-//                let transition = SKTransition.moveIn(with: .up, duration: 1.0)
-//                ACTManager.shared.transition(self, toScene: .GamePlay, transition: transition)
-//            }
-//
-//        }
-//    }
-    
-    
-    func setupNode() {
-        playButton.position = CGPoint(x: size.width/2, y: size.height/2)
-
-    }
-    
-    func addNodes() {
+    func buildNodeHierarchy() {
         addChild(playButton)
     }
 }

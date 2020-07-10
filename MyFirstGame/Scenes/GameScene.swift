@@ -14,6 +14,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let character: Character
     let ground: Ground
     
+    let cameraNode: SKCameraNode
+    
     // objects
     let treeSprite: Tree
     let treeSprite2: Tree
@@ -27,7 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: - Init
     override init(size: CGSize) {
-        character = WoodCutter() // <-- change the character here
+        character = Character(name: .woodcutter) // <-- change the character here
         ground = Ground(size: size)
         
         treeSprite = Tree()
@@ -39,11 +41,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         jumpButton = SpriteButton(imageNamed: "jumpButton")
         
+        cameraNode = SKCameraNode()
         super.init(size: size)
         
         setup()
-        setupButtons()
-        addNode()
+        buildNodeHierarchy()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,11 +59,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         scene?.backgroundColor = .myColor
         
-        attackButton.position = CGPoint(x: frame.midX + size.width/3, y: frame.midY - 100)
+        
+        cameraNode.position.x = self.size.width / 2
+        cameraNode.position.y = self.size.height / 2
+        camera = cameraNode
+        
+        attackButton.position = CGPoint(x: cameraNode.frame.midX / 2 + 100, y: cameraNode.frame.midY / 2 - frame.midY)
         attackButton.button.size = CGSize(width: 40, height: 40)
         attackButton.zPosition = 10
         
-        padLeft.position = CGPoint(x: frame.midX - size.width/4 - 150, y: frame.midY - 150)
+        padLeft.position = CGPoint(x: cameraNode.frame.midX / 2 - frame.midX * 1.35, y: cameraNode.frame.midY / 2 - frame.midY - 60)
         padLeft.button.size = CGSize(width: 40, height: 40)
         padLeft.zPosition = 10
         
@@ -72,6 +79,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpButton.position = CGPoint(x: attackButton.position.x, y:  attackButton.position.y - jumpButton.button.size.height - 20)
         jumpButton.button.size = CGSize(width: 40, height: 40)
         jumpButton.zPosition = 10
+        
+        setupButtons()
         
         // character
         loadCharacter(character)
@@ -85,17 +94,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         loadTree(treeSprite2)
     }
     
-    func addNode() {
-        addChild(attackButton)
-        addChild(jumpButton)
-        addChild(padLeft)
-        addChild(padRight)
+    func buildNodeHierarchy() {
+        addChild(cameraNode)
+        cameraNode.addChild(attackButton)
+        cameraNode.addChild(jumpButton)
+        cameraNode.addChild(padLeft)
+        cameraNode.addChild(padRight)
     }
-    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
    
-        
         for touch in touches {
             let location = touch.location(in: self)
             
@@ -108,8 +116,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
-        
-        
         
     }
     
@@ -151,13 +157,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if collision == CategoryMask.woodcutter.rawValue | CategoryMask.tree.rawValue {
             self.character.removeAllActions()
             self.character.idle()
-//            let tree = contact.bodyB.node as? Tree
-//                       tree?.life -= 1
-//
-//                       if tree?.life == 0 {
-//                           contact.bodyB.node?.removeFromParent()
-//                       }
-
             
         }
     }
@@ -173,7 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        
+        cameraNode.position.x = self.character.position.x
     }
    
 }
