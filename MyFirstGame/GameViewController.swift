@@ -11,24 +11,39 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-
+    
+    let skView: SKView = {
+        let view = SKView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscape
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let view = self.view as! SKView? {
-            // Load the SKScene from 'GameScene size'
-            let scene = GameScene(size: view.bounds.size)
-            scene.scaleMode = .aspectFill
-            scene.reloadInputViews()
-            
-            // Present the scene
-            view.presentScene(scene)
-                
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
-        }
+        view.addSubview(skView)
+        setupConstrains()
+        
+        
+        let scene = MenuScene(size: CGSize(width: ScreenSize.width, height: ScreenSize.height))
+        scene.scaleMode = .aspectFill
+        skView.presentScene(scene)
+    }
+    
+    
+    func setupConstrains() {
+        
+        NSLayoutConstraint.activate([
+            skView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            skView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            skView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            skView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ])
+        
     }
 
 }
