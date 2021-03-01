@@ -14,7 +14,7 @@ class Character: SKSpriteNode {
     // Player Proprieties
     var velocity: Double = 1.0
     var characterSize = CGSize(width: 100.0, height: 100.0)
-    var characterTexture: SKTexture? = SKTexture(imageNamed: "idle0")
+    var characterTexture: SKTexture? = SKTexture(imageNamed: "idle")
     var characterxScale: Double = 1.0
     var movingTo: Direction?
     
@@ -68,7 +68,7 @@ class Character: SKSpriteNode {
         var actionFrame = [SKTexture]()
         let textureAtlas = SKTextureAtlas(named: atlasName)
         
-        for index in 0..<textureAtlas.textureNames.count {
+        for index in 1..<textureAtlas.textureNames.count {
             let textureName = textureName + String(index)
             actionFrame.append(textureAtlas.textureNamed(textureName))
         }
