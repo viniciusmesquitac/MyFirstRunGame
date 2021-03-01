@@ -11,16 +11,16 @@ import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    // Character
     let character: Character
+    
+    // Scenario
     let ground: Ground
     
+    // Camera
     let cameraNode: SKCameraNode
     
-    // objects
-    let treeSprite: Tree
-    let treeSprite2: Tree
-    
-    // interface
+    // Interface
     let attackButton: SpriteButton
     let padLeft: SpriteButton
     let padRight: SpriteButton
@@ -32,13 +32,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         character = Character(name: .woodcutter) // <-- change the character here
         ground = Ground(size: size)
         
-        treeSprite = Tree()
-        treeSprite2 = Tree()
-        
         attackButton = SpriteButton(imageNamed: "attackButton")
         padLeft = SpriteButton(imageNamed: "padLef")
         padRight = SpriteButton(imageNamed: "padRight")
-        
         jumpButton = SpriteButton(imageNamed: "jumpButton")
         
         cameraNode = SKCameraNode()
@@ -59,7 +55,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         scene?.backgroundColor = .myColor
         
+        setupPositions()
         
+        // character
+        loadCharacter(character)
+        
+        // background
+        loadGround(ground)
+        
+        // elements
+        loadElements(elements: [Tree(), Tree()])
+    }
+    
+    private func buildNodeHierarchy() {
+        addChild(cameraNode)
+        cameraNode.addChild(attackButton)
+        cameraNode.addChild(jumpButton)
+        cameraNode.addChild(padLeft)
+        cameraNode.addChild(padRight)
+    }
+    
+    private func loadElements(elements: [Tree]) {
+        elements.forEach { loadTree($0) }
+    }
+    
+    private func setupPositions() {
         cameraNode.position.x = self.size.width / 2
         cameraNode.position.y = self.size.height / 2
         camera = cameraNode
@@ -81,73 +101,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpButton.zPosition = 10
         
         setupButtons()
-        
-        // character
-        loadCharacter(character)
-        
-        // background
-        //        loadBackground(background: background)
-        loadGround(ground)
-        
-        // elements
-        loadTree(treeSprite)
-        loadTree(treeSprite2)
-    }
-    
-    func buildNodeHierarchy() {
-        addChild(cameraNode)
-        cameraNode.addChild(attackButton)
-        cameraNode.addChild(jumpButton)
-        cameraNode.addChild(padLeft)
-        cameraNode.addChild(padRight)
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-   
-        for touch in touches {
-            let location = touch.location(in: self)
-            
-            if(location.x < self.size.width / 2) {
-                handlePlayerActions(direction: .left)
-            }
-            
-            if(location.x > self.size.width / 2) {
-                handlePlayerActions(direction: .right)
-            }
-            
-        }
-        
-    }
-    
-    func handlePlayerActions(direction: Direction) {
-        
-        // if not running, attacking.
-        if let _ = character.action(forKey: PlayerActions.run.rawValue) {
-            character.removeAllActions()
-            character.idle()
-        } else {
-            if !character.frame.intersects(self.treeSprite.frame) {
-                character.run(direction: direction)
-            } else {
-                character.attack(repeatForever: false)
-            }
-        }
-
-        // if not attacking, running.
-        if let _ = character.action(forKey: PlayerActions.attack.rawValue) {
-            character.removeAllActions()
-            character.run(direction: direction)
-        } else {
-
-            // if attaching the limits of screen, the player will be send to the start!
-            if character.position.x > frame.maxX {
-                let startPointX = frame.midX - frame.width/2 + character.size.width/2
-                let startPointY = frame.midY - frame.height/2 + character.size.height + 100
-                // goodbye player :>
-                character.position = CGPoint(x: startPointX, y: startPointY)
-            }
-        }
-        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
