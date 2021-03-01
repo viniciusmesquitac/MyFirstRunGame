@@ -17,65 +17,32 @@ extension GameScene {
             
             // verify if attack animation is running :D
             if let _ = self.character.action(forKey: PlayerActions.attack.rawValue) {
-                
+                // If it is running, just wait.
             } else {
                 self.character.removeAllActions()
                 self.character.idle()
                 self.character.attack(repeatForever: false)
                 
-                if self.character.frame.intersects(self.treeSprite.frame) {
-                    print("atacou!!")
+                self.elements.forEach { element in
                     
-                    self.treeSprite.life -= 1
-                    
-                    if self.treeSprite.life == 0 {
-                        self.treeSprite.removeFromParent()
+                    // Create Tree Logic
+                    if let tree = element as? Tree {
+                        if self.character.frame.intersects(tree.frame) {
+                            tree.life -= 1
+                        }
                     }
-                }
-                
-                if self.character.frame.intersects(self.treeSprite2.frame) {
                     
-                    self.treeSprite2.life -= 1
-                    
-                    if self.treeSprite2.life == 0 {
-                        self.treeSprite2.removeFromParent()
-                    }
+                    /* Add more elements Logic here */
                 }
             }
         }
-        
-        
-        
+
         padLeft.setAction {
             
             if let _ = self.character.action(forKey: PlayerActions.run.rawValue) {
                 self.character.removeAllActions()
                 self.character.idle()
             } else {
-                if self.character.position.y > 91 {
-                    
-                    var newPosition: CGPoint = .zero
-                    var olderPosition: CGPoint = .zero
-                    
-                    switch self.character.movingTo {
-                    case .left:
-                        olderPosition = CGPoint(x: self.position.x - 20, y: self.position.y)
-                        newPosition = CGPoint(x: self.position.x - 20, y: self.position.y *  1.7)
-                    case .right:
-                        olderPosition = CGPoint(x: self.position.x * 1.1, y: self.position.y)
-                        newPosition = CGPoint(x: self.position.x * 1.1, y: self.position.y * 1.7)
-                        
-                    case .none:
-                        print("opa")
-                    }
-                    
-                    let jumpMove = SKAction.move(to: newPosition, duration: 0.3)
-                    let jumpMoveBack = SKAction.move(to: olderPosition, duration: 0.3)
-                    
-                    let jumpMoveAction = SKAction.sequence([jumpMove, jumpMoveBack])
-                    
-                    self.character.move()
-                }
                 self.character.run(direction: .left)
             }
             

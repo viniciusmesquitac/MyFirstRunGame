@@ -16,6 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Scenario
     let ground: Ground
+    let elements: [SKSpriteNode]
     
     // Camera
     let cameraNode: SKCameraNode
@@ -38,6 +39,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         jumpButton = SpriteButton(imageNamed: "jumpButton")
         
         cameraNode = SKCameraNode()
+        elements = [Tree(), Tree()]
         super.init(size: size)
         
         setup()
@@ -64,7 +66,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         loadGround(ground)
         
         // elements
-        loadElements(elements: [Tree(), Tree()])
+        loadElements(elements: elements)
     }
     
     private func buildNodeHierarchy() {
@@ -75,7 +77,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         cameraNode.addChild(padRight)
     }
     
-    private func loadElements(elements: [Tree]) {
+    private func loadElements(elements: [SKSpriteNode]) {
         elements.forEach { loadTree($0) }
     }
     

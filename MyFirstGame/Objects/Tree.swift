@@ -10,7 +10,14 @@ import SpriteKit
 
 class Tree: SKSpriteNode {
     
-    var life = 5
+    var life = 5 {
+        didSet {
+            if life == 0 {
+                self.removeFromParent()
+            }
+        }
+    }
+    
     let myTexture = SKTexture()
     let initialSize = CGSize(width: 30.0, height: 100.0)
     
