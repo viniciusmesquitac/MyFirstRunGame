@@ -11,11 +11,10 @@ import SpriteKit
 class Ground: SKSpriteNode {
     
     var groundTexture: SKTexture? = SKTexture(imageNamed: "ground")
-
-
+    
     init(size: CGSize) {
-        let groundSize = CGSize(width: size.width, height: 40)
-        super.init(texture: groundTexture, color: .brown, size: groundSize)
+        let groundSize = CGSize(width: size.width, height: 100)
+        super.init(texture: nil, color: .brown, size: groundSize)
         
         setup()
     }
